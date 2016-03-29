@@ -26,7 +26,7 @@ class libs extends Core {
 		// echo "<br>";
 		//print_r($thead);
 		//echo $this->getest($curdb, false, false, false, $lj);
-
+		//echo $this->leftjoin(Array(), Array());
 		echo "<table class=\"table table-striped\" id=\"libtab\">";
 		echo "<thead><tr>";
 		$virtfields = array_keys(array_values($table)[0]);
@@ -68,17 +68,16 @@ class libs extends Core {
     		$this->libs_get($_GET['go'], 'lib_'.$_GET['go'], Array('#iD', 'Наименование', 'Полное наименование', 'Адрес', 'Реквизиты', 'Описание'), Array('id', 'name', 'fullname', 'address', 'requisites', 'description'));
     	}
     	if ($_GET['go']=='department'){
-    		 //$this->libs_get($_GET['go'], 'lib_'.$_GET['go'], Array('#iD', 'Наименование', 'Расположение', 'Описание'), Array('lib_'.$_GET['go'].'.id', 'lib_'.$_GET['go'].'.name', 'lib_location.name', 'lib_'.$_GET['go'].'.description'), Array('lib_location', 'lib_location.id=lib_department.location'));
-    		$this->libs_get($_GET['go'], 'lib_'.$_GET['go'], Array('#iD', 'Наименование', 'Расположение', 'Описание'), Array('lib_'.$_GET['go'].'.id as id', 'lib_'.$_GET['go'].'.name as name', 'lib_location.name as location', 'lib_'.$_GET['go'].'.description as description'), Array('lib_location', 'lib_location.id=lib_department.location'));
+    		$this->libs_get($_GET['go'], 'lib_'.$_GET['go'], Array('#iD', 'Наименование', 'Расположение', 'Описание'), Array('lib_'.$_GET['go'].'.id as id', 'lib_'.$_GET['go'].'.name as name', 'lib_location.name as location', 'lib_'.$_GET['go'].'.description as description'), $this->leftjoin(Array('lib_location'), Array('lib_location.id=lib_department.location')));
     	}
     	if ($_GET['go']=='contragents'){
-    		$this->mol();
+    		$this->libs_get($_GET['go'], 'lib_'.$_GET['go'], Array('#iD', 'Наименование', 'Должность', 'Подразделение', 'Компания', 'Описание'), Array('lib_'.$_GET['go'].'.id as id', 'lib_'.$_GET['go'].'.name as name', 'lib_'.$_GET['go'].'.position as position', 'lib_department.name as department', 'lib_companies.name as compamy', 'lib_'.$_GET['go'].'.description as description'), $this->leftjoin(Array('lib_department', 'lib_companies'), Array('lib_contragents.dep_id=lib_department.id', 'lib_contragents.company_id=lib_companies.id')));
     	}
     	if ($_GET['go']=='operations'){
-    		$this->operations();
+    		$this->libs_get($_GET['go'], 'lib_'.$_GET['go'], Array('#iD', 'Наименование', 'Тип оборудования'), Array('lib_'.$_GET['go'].'.id as id', 'lib_'.$_GET['go'].'.name as name', 'lib_typeof_equipment.names as enames'), $this->leftjoin(Array('lib_typeof_equipment'), Array('lib_'.$_GET['go'].'.type_id=lib_typeof_equipment.id')));
     	}
     	if ($_GET['go']=='equipment'){
-    		$this->equipments();
+    		$this->libs_get($_GET['go'], 'lib_'.$_GET['go'], Array('#iD', 'Наименование', 'Номер', 'Тип оборудования', 'Модель'), Array('lib_'.$_GET['go'].'.id as id', 'lib_'.$_GET['go'].'.name as name', 'lib_'.$_GET['go'].'.number as number', 'lib_typeof_equipment.names as enames', 'lib_'.$_GET['go'].'.model as model'), $this->leftjoin(Array('lib_typeof_equipment'), Array('lib_'.$_GET['go'].'.type=lib_typeof_equipment.id')));
     	}
 		echo '</div></div>';
 	}

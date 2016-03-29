@@ -12,6 +12,15 @@
 			mysql_query("SET NAMES utf8");
 		}
 
+		protected function leftjoin ($tarr, $farr){
+			//SELECT lib_contragents.name,  lib_contragents.position, lib_contragents.dep_id, lib_department.name, lib_contragents.company_id, lib_companies.name FROM lib_contragents LEFT JOIN lib_department ON lib_contragents.dep_id=lib_department.id LEFT JOIN lib_companies ON lib_contragents.company_id=lib_companies.id
+			
+			foreach ($tarr as $key => $value) {
+				$ljoinout.=" LEFT JOIN ".$value." ON ".$farr[$key];
+			}
+			return $ljoinout;
+		}
+
 		public function getdata($table, $fields=false, $param=false, $sort=false, $lj=false){
 
 		if(!$fields){
@@ -28,7 +37,7 @@
 		}
 		
 		if ($lj){
-			$sql.=" LEFT JOIN ".$lj[0]." ON ".$lj[1];
+			$sql.=$lj;
 		}
 		
 		if($param){
@@ -51,13 +60,8 @@
 			return $row;
 		}
 
-
-
 		public function getest($table, $fields=false, $param=false, $sort=false, $lj=false){
 		
-		
-
-
 		if(!$fields){
 			$sql="SELECT * FROM ".$table;
 		}
@@ -73,10 +77,7 @@
 		}
 		
 		if ($lj){
-			foreach ($lj as $key => $value) {
-				$sql.=" LEFT JOIN ".$value[0]." ON ".$value[1];	
-			}
-			
+			$sql.=$lj;			
 		}
 		
 		if($param){
@@ -85,12 +86,9 @@
 
 		if($sort){
 				$sql.=" ORDER BY ".$sort;
-			}
-		
+			}		
 		
 			return $sql;
-
-
 		}
 
 		public function insertdata($q){
