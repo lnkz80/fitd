@@ -59,7 +59,9 @@ $(document).ready(function() {
 	    		if (!obj.error){
 		    		$(".itemstatus").css("color", "green");
 		    		$(".itemstatus").html(obj.data);
+		    		if (obj.arr['id']){
 		    		$("#libtab > tbody").append("<tr><td>" + obj.arr['id'] + "</td><td>" + obj.arr['name'] + "</td></tr>");
+		    			}
 	    		}
 	    		else {
 	    			$(".itemstatus").css("color", "red");

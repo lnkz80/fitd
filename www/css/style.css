@@ -62,11 +62,11 @@ ul.dropdown-menu {
   margin: 0; }
 
 .lside_mnu h4 {
-  color: #1595A3;
+  color: #fff;
   font-size: 16px;
   font-family: "Gill Sans";
   text-align: right;
-  background-color: #ACF0F2;
+  background-color: #1595A3;
   padding: 10px 5px 10px;
   display: block;
   width: 100%; }

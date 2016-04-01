@@ -2,7 +2,8 @@
 
 class libs extends Core {
 	protected $name;
-
+	protected $type;
+	protected $table;
 
 	protected function get_lmenu(){
 			echo '<div class="row"><div class="col-lg-2 col-md-4 col-sm-4 col-xs-4 mnucol">';
@@ -16,9 +17,10 @@ class libs extends Core {
 	}
 
 	protected function libs_get($type, $curdb, $thead, $curflds, $lj=false) {
-		$lj?$table = $this->getdata($curdb, $curflds, false, false, $lj):$table = $this->getdata($curdb);
+		$this->type = $type;
+		$lj?$this->table = $this->getdata($curdb, $curflds, false, false, $lj):$this->table = $this->getdata($curdb);
 		echo "<div class='formwrapper'>";
-		echo "<h4>Справочник '".$this->name[$type]."'</h4>";
+		echo "<h4>Справочник '".$this->name[$this->type]."'</h4>";
 		echo "<hr />";
 		//print_r($table);
 		//echo "<p></p>";
@@ -29,12 +31,12 @@ class libs extends Core {
 		//echo $this->leftjoin(Array(), Array());
 		echo "<table class=\"table table-striped\" id=\"libtab\">";
 		echo "<thead><tr>";
-		$virtfields = array_keys(array_values($table)[0]);
+		$virtfields = array_keys(array_values($this->table)[0]);
 		foreach ($thead as $th) {				
 					echo "<th>".$th."</th>";		
 			}
 		echo "</tr></thead><tbody>";
-		foreach ($table as $key => $value) {
+		foreach ($this->table as $key => $value) {
 			echo "<tr>";
 			foreach ($virtfields as $fieldname) {				
 					echo "<td>".$value[$fieldname]."</td>";		
@@ -48,15 +50,26 @@ class libs extends Core {
 		echo "<h5>Добавить данные в справочник '".$this->name[$type]."'</h5>";
 		echo "<hr />";
 		echo "<span class=\"itemstatus\"></span>";
-		echo "<form action=\"../modules/formshandler.php?go=libs&type=".$type."\" method='post' class='mineforms'>";
-		echo "<label for=\"itemname\">Наименование :</label><input type='text' name='itemname' placeholder='Наименование'>";
-		echo "<input type='submit' value='записать'>";
-		echo "</form>";
+		// echo "<form action=\"../modules/formshandler.php?go=libs&type=".$type."\" method='post' class='mineforms'>";
+		// echo "<label for=\"itemname\">Наименование :</label><input type='text' name='itemname' placeholder='Наименование'>";
+		// echo "<input type='submit' value='записать'>";
+		// echo "</form>";
+		$this->get_forms($curdb);
 
+		$testform = new forms("post", "../modules/formshandler.php?go=libs&type=".$this->type,"test", "mineforms");
+		echo $testform->inputs("Test", "For testing something...", $type, "test", "placeholder");
+		echo $testform->sbmt();
 		echo "</div>";
 	}
 
-	
+	protected function get_forms ($dbtable, $fields=false){
+		//print_r($this->table);
+		echo "<form action=\"../modules/formshandler.php?go=libs&type=".$this->type."\" method='post' class='mineforms'>";
+		echo "<label for=\"itemname\">Наименование :</label><input type='text' name='itemname' placeholder='$dbtable'>";
+		echo "<input type='submit' value='записать'>";
+		echo "</form>";
+
+	}
 
 	public function get_content (){
 		
