@@ -13,8 +13,28 @@ class forms {
         }
      
     public function inputs($for, $text, $type, $name, $placeholder){           
-            return $this->label($for, $text)."<input type='$type' name='$name' placeholder='$placeholder'/>";
+            return $this->label($for, $text)."<input type='$type' name='$name' placeholder='$placeholder' />";
         }   
+
+    public function tarea($for, $text, $name, $placeholder){           
+        return $this->label($for, $text)."<TEXTAREA WRAP='virtual' ROWS='7' name=".$name." placeholder=".$placeholder."></TEXTAREA>";
+        }  
+
+    public function select($name, $dbtbl){
+        $dbc = new dbconn();
+        //print_r($dbc->getdata("lib_location"));
+        $section = $dbc->getdata('lib_location');
+
+
+        return "<select><option>ttt1</option><option>eee2</option><option>yyy3</option></select>";
+
+       //  $select="<select name='$name' id='$id' ".self::attr($attr).">";
+       //  foreach($value as $value => $val_text)  {
+       //      $select.="<option value='$value'>$val_text</option>";
+       //  }
+       // $select.="</select>";
+       // return  self::label($id,$text,$attr).$select;
+    } 
 
     public function sbmt(){
         return "<input type='submit' value='записать'>";

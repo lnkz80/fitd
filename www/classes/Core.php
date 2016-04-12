@@ -1,103 +1,102 @@
 <?php 
 	abstract class Core {
-		protected $db;
-		function __construct(){
-			$this->db=mysql_connect(HOST, USER, PASS);
-			if (!$this->db){			 
-			exit("No connection with database!");
-			}
-			if(!mysql_select_db(DB, $this->db)){
-				exit("No table!");
-			}
-			mysql_query("SET NAMES utf8");
-		}
+		// protected $db;
 
-		protected function leftjoin ($tarr, $farr){
-			//SELECT lib_contragents.name,  lib_contragents.position, lib_contragents.dep_id, lib_department.name, lib_contragents.company_id, lib_companies.name FROM lib_contragents LEFT JOIN lib_department ON lib_contragents.dep_id=lib_department.id LEFT JOIN lib_companies ON lib_contragents.company_id=lib_companies.id
+		// function __construct(){
+		// 	$this->db=mysql_connect(HOST, USER, PASS);
+		// 	if (!$this->db){			 
+		// 	exit("No connection with database!");
+		// 	}
+		// 	if(!mysql_select_db(DB, $this->db)){
+		// 		exit("No table!");
+		// 	}
+		// 	mysql_query("SET NAMES utf8");
+		// }
+
+		// protected function leftjoin ($tarr, $farr){			
+		// 	foreach ($tarr as $key => $value) {
+		// 		$ljoinout.=" LEFT JOIN ".$value." ON ".$farr[$key];
+		// 	}
+		// 	return $ljoinout;
+		// }
+
+		// public function getdata($table, $fields=false, $param=false, $sort=false, $lj=false){
+
+		// if(!$fields){
+		// 	$sql="SELECT * FROM ".$table;
+		// }
+		// else {
+		// 	if(is_array($fields)){
+		// 		$fld = implode(", ", $fields);
+		// 		$sql = "SELECT ".$fld." FROM ".$table;
+		// 	}
+		// 	else {
+		// 		$sql = "SELECT ".$fields." FROM ".$table;
+		// 	}
+		// }
+		
+		// if ($lj){
+		// 	$sql.=$lj;
+		// }
+		
+		// if($param){
+		// 	$sql.=" WHERE ".$param;
+		// }
+		// if($sort){
+		// 		$sql.=" ORDER BY ".$sort;
+		// 	}
+		
+		// $res=mysql_query($sql);
+		
+		// if (!$res){
+		// 	return FALSE;
+		// }
 			
-			foreach ($tarr as $key => $value) {
-				$ljoinout.=" LEFT JOIN ".$value." ON ".$farr[$key];
-			}
-			return $ljoinout;
-		}
+		// 	for ($i=0; $i < mysql_num_rows($res); $i++){
+		// 		$row[]=mysql_fetch_array($res, MYSQL_ASSOC);
+		// 	}
 
-		public function getdata($table, $fields=false, $param=false, $sort=false, $lj=false){
+		// 	return $row;
+		// }
 
-		if(!$fields){
-			$sql="SELECT * FROM ".$table;
-		}
-		else {
-			if(is_array($fields)){
-				$fld = implode(", ", $fields);
-				$sql = "SELECT ".$fld." FROM ".$table;
-			}
-			else {
-				$sql = "SELECT ".$fields." FROM ".$table;
-			}
-		}
+		// public function getest($table, $fields=false, $param=false, $sort=false, $lj=false){
 		
-		if ($lj){
-			$sql.=$lj;
-		}
-		
-		if($param){
-			$sql.=" WHERE ".$param;
-		}
-		if($sort){
-				$sql.=" ORDER BY ".$sort;
-			}
-		
-		$res=mysql_query($sql);
-		
-		if (!$res){
-			return FALSE;
-		}
-			
-			for ($i=0; $i < mysql_num_rows($res); $i++){
-				$row[]=mysql_fetch_array($res, MYSQL_ASSOC);
-			}
+		// if(!$fields){
+		// 	$sql="SELECT * FROM ".$table;
+		// }
 
-			return $row;
-		}
-
-		public function getest($table, $fields=false, $param=false, $sort=false, $lj=false){
+		// else {
+		// 	if(is_array($fields)){
+		// 		$fld = implode(", ", $fields);
+		// 		$sql = "SELECT ".$fld." FROM ".$table;
+		// 	}
+		// 	else {
+		// 		$sql = "SELECT ".$fields." FROM ".$table;
+		// 	}
+		// }
 		
-		if(!$fields){
-			$sql="SELECT * FROM ".$table;
-		}
-
-		else {
-			if(is_array($fields)){
-				$fld = implode(", ", $fields);
-				$sql = "SELECT ".$fld." FROM ".$table;
-			}
-			else {
-				$sql = "SELECT ".$fields." FROM ".$table;
-			}
-		}
+		// if ($lj){
+		// 	$sql.=$lj;			
+		// }
 		
-		if ($lj){
-			$sql.=$lj;			
-		}
-		
-		if($param){
-			$sql.=" WHERE ".$param;
-		}
+		// if($param){
+		// 	$sql.=" WHERE ".$param;
+		// }
 
-		if($sort){
-				$sql.=" ORDER BY ".$sort;
-			}		
+		// if($sort){
+		// 		$sql.=" ORDER BY ".$sort;
+		// 	}		
 		
-			return $sql;
-		}
+		// 	return $sql;
+		// }
 
-		public function insertdata($q){
-			$result = mysql_query($q) or die("Invalid query: " . mysql_error());
-			// for ($i=0; $i < mysql_num_rows($result); $i++){
-			// 	$row[] = mysql_fetch_array($result, MYSQL_ASSOC);
-			// }
-			// return $row;
-		}
+		// public function insertdata($q){
+		// 	$result = mysql_query($q) or die("Invalid query: " . mysql_error());
+		// 	// for ($i=0; $i < mysql_num_rows($result); $i++){
+		// 	// 	$row[] = mysql_fetch_array($result, MYSQL_ASSOC);
+		// 	// }
+		// 	// return $row;
+		// }
 
 		protected function get_head(){
 			include "tpl/head.php";
@@ -110,7 +109,13 @@
 		  		<ul class="nav nav-pills">
 		  			<li><a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Оборудование <span class="caret"></span></a>
 		        <ul class="dropdown-menu">';
-		    $ttt = $this->getdata('lib_typeof_equipment');
+		    
+		    $db = dbconn::getInstance();
+		    $mysqli = $db->getConnection();
+		    
+		    $ttt = $db->getdata('lib_typeof_equipment');
+		    
+		    //print_r($ttt);
 		    foreach ($ttt as $key=>$value){
 		    	echo "<li><a href='index.php?m=units&cat=".$value['id']."'>".$value['names']."</a></li>";
 		          }		     

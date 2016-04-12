@@ -2,6 +2,7 @@
 require_once '../config.php';
 require_once '../classes/Core.php';
 require_once '../classes/units.php';
+
 $core = new units;
 
 if ($_POST){
@@ -62,8 +63,7 @@ if ($_POST){
 		if($_GET['type']=='location'){
 			$name = $_POST['itemname'];
 			$query = "INSERT INTO lib_location (name) VALUES ('$name')";
-			$query2 = "select * from lib_location ORDER BY id DESC
-LIMIT 1";
+			$query2 = "select * from lib_location ORDER BY id DESC LIMIT 1";
 			if(mysql_query($query)){
 			$data = "Данные успешно внесены";
 			$res = mysql_query($query2);

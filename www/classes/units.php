@@ -1,10 +1,11 @@
 <?php 
 
 class units extends Core {
+
 	protected function get_lmenu(){
 			echo '<div class="row"><div class="col-lg-2 col-md-4 col-sm-4 col-xs-4 mnucol">';
 		//if (isset($_GET["cat"])){
-		$section = $this->getdata('lib_typeof_equipment', 'names', 'id='.$_GET["cat"]);
+		$section = dbconn::getdata('lib_typeof_equipment', 'names', 'id='.$_GET["cat"]);
 	 	$text = $this->lmenu($section[0]['names'], array("new"=>"Новый", "nolink"=>"Журнал", "journ_sub"=>array("rec"=>"запись", "view"=>"просмотр")), $_GET["cat"], "units");
 	  	//$sqltxt = $page->getdata();
 		echo $text;
@@ -19,7 +20,7 @@ class units extends Core {
 	private $name;
 
 	protected function newitem() {
-		$name = $this->getdata('lib_typeof_equipment', 'name', 'id='.$_GET["cat"]);
+		$name = dbconn::getdata('lib_typeof_equipment', 'name', 'id='.$_GET["cat"]);
 		$name = mb_strtolower($name[0]['name'], 'UTF-8');
 		echo "<div class='formwrapper'>";
 		echo "<h4>Новый $name</h4>";		
@@ -39,7 +40,7 @@ class units extends Core {
 	}
 
 	private function recitem() {
-		$name = $this->getdata('lib_typeof_equipment', 'name', 'id='.$_GET["cat"]);
+		$name = dbconn::getdata('lib_typeof_equipment', 'name', 'id='.$_GET["cat"]);
 		$name = mb_strtolower($name[0]['name'], 'UTF-8');
 		echo "<div class='formwrapper'>";
 		echo "<h4>Добавить запись в журнал</h4>";		
@@ -49,7 +50,7 @@ class units extends Core {
 
 		echo "<label for=\"itemname\">Дата:</label><input type='text' id=\"datepicker\" name='dateoper' value='".date('Y-m-d')."'>";
 		echo "<label for=\"itemselect\">Выбрать $name: </label><br /><select name=\"getunit\" id=\"\">";
-			$arr = $this->getdata('lib_equipment', false, 'type='.$_GET["cat"], 'number');
+			$arr = dbconn::getdata('lib_equipment', false, 'type='.$_GET["cat"], 'number');
 			//print_r ($arr);
 			foreach ($arr as $key => $value) {
 				echo "<option value=".$value['id'].">".$value['number']." - ".$value['name']." ".$value['model']."</option>";
@@ -62,12 +63,13 @@ class units extends Core {
 		// }
 
 		echo "</select>";
-		
+		$db = dbconn::getInstance();
+$mysqli = $db->getConnection();
 
 		echo "<label for=\"itemselect\">Выбрать действие с $name: </label><br /><select id=\"test\" name='opid'>";
 		$query = "SELECT lib_operations.id as opid, lib_operations.name as opname, lib_typeof_equipment.name as unitname FROM lib_typeof_equipment LEFT JOIN lib_operations ON lib_operations.type_id=lib_typeof_equipment.id WHERE lib_typeof_equipment.id=".$_GET["cat"];
-		$result = mysql_query($query);
-		while ($arr = mysql_fetch_array($result)){
+		$result = mysqli_query($mysqli, $query);
+		while ($arr = mysqli_fetch_array($result)){
 			echo "<option value=".$arr['opid'].">".$arr['opname']."</option>";
 		}		
 
@@ -76,15 +78,22 @@ class units extends Core {
 		// }
 
 		echo "</select>";
+		// echo "<label for=\"itemselect\">От: </label><br /><select name='from'>";
+		// $query2 = "SELECT * FROM lib_contragents";
+		// $result2 = mysqli_query($mysqli, $query2);
+		// while ($arr2 = mysqli_fetch_array($result2)){
+		// 	echo "<option value=".$arr2['id'].">".$arr2['name']." (".$arr2['position'].")</option>";
+		// }
+		// echo "</select>";
+
+		$arr = dbconn::getdata('lib_contragents');
 		echo "<label for=\"itemselect\">От: </label><br /><select name='from'>";
-		$query2 = "SELECT * FROM lib_contragents";
-		$result2 = mysql_query($query2);
-		while ($arr2 = mysql_fetch_array($result2)){
-			echo "<option value=".$arr2['id'].">".$arr2['name']." (".$arr2['position'].")</option>";
+		foreach ($arr as $key => $value) {
+			echo "<option value=".$value['id'].">".$value['name']." (".$value['position'].")</option>";
 		}
 		echo "</select>";
 
-		$arr = $this->getdata('lib_contragents');
+		
 		echo "<label for=\"itemselect\">Кому: </label><br /><select name='to'>";
 		foreach ($arr as $key => $value) {
 			echo "<option value=".$value['id'].">".$value['name']." (".$value['position'].")</option>";
